@@ -1,0 +1,138 @@
+<?php
+/**
+ * Magestore
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the Magestore.com license that is
+ * available through the world-wide-web at this URL:
+ * http://www.magestore.com/license-agreement.html
+ *
+ * DISCLAIMER
+ *
+ * Do not edit or add to this file if you wish to upgrade this extension to newer
+ * version in the future.
+ *
+ * @category    Magestore
+ * @package     Magestore_Membership
+ * @copyright   Copyright (c) 2012 Magestore (http://www.magestore.com/)
+ * @license     http://www.magestore.com/license-agreement.html
+ */
+?>
+
+<?php
+    /** @var $block \Magestore\Membership\Block\Compare */
+    $packages = $block->getPackages();
+    $total = count($packages);
+    /** @var \Magento\Catalog\Model\Product $product */
+    $product = $block->getProduct();
+    $productPrice = floatval($product->getData('price'));
+?>
+
+<div class="ms-membership">
+    <div class="page-title title-buttons form-group">
+        <div class="header-pk">
+            <div id="titlepk">
+                <h1><?php echo $product->getName() .": <span style='color:#26384c'>" .  $block->formatPrice($productPrice). "</span>";?></h1>
+            </div>
+            <div id="printpk">
+                <a href="#" onclick="window.print(); return false;" class="link-print"><span class="glyphicon glyphicon-print"></span> Print This Page</a>
+            </div>
+        </div>
+    </div>
+
+    <div class="table-responsive form-group">
+        <table class="packages-table table table-bordered table-hover" id="packages-table">
+            <thead>
+                <tr id="th-title">
+                    <th class="first"><?php /* @escapeNotVerified */ echo __('Package') ?></th>
+                    <th width="15%"><?php /* @escapeNotVerified */ echo __('Regular Price') ?></th>
+                    <th width="18%"><?php /* @escapeNotVerified */ echo __('Membership Price') ?></th>
+                    <th width="15%"><?php /* @escapeNotVerified */ echo __('You Save') ?></th>
+                    <th width="15%"><?php /* @escapeNotVerified */ echo __('View') ?></th>
+                    <th width="15%"></th>
+                </tr>
+            </thead>
+            <tbody>
+            <?php /** @var \Magestore\Membership\Model\Package $package */
+            foreach($packages as $package): ?>
+                <?php $productMembershipPrice = $block->getMembershipPrice($package)?>
+                <tr>
+                    <td class="first"><?php echo $package->getPackageName() ?></td>
+                    <td><?php echo $block->formatPrice($productPrice)?></td>
+                    <td><?php echo $block->formatPrice($productMembershipPrice) ?></td>
+                    <td><?php echo $block->formatPrice($productPrice - $productMembershipPrice)?></td>
+                    <td>
+					<span id="product-view-plan">
+					<a onclick="javascript:setPLocation('<?php echo $block->getPackageUrl($package) ?>', true);window.close();" href="<?php echo $block->getPackageUrl($package); ?>"><?php echo __('View Package')?></a>
+					</span>
+                    </td>
+                    <td>
+                        <?php if(!$memberPackage = $block->getSignedUpPackageInfo($package->getId())): ?>
+                            <span id="product-sign-up">
+						<a class="ms-buy" href="<?php echo $block->getUrl('membership/index/addToCart', ['id' => $package->getId()]) ?>"><?php echo __('Buy')?></a>
+						</span>
+                        <?php else:
+                            $endTime = $block->formatDate($memberPackage->getEndTime(),\IntlDateFormatter::LONG);
+                            echo __(sprintf('Expire on %s', $endTime));
+                        endif; ?>
+                    </td>
+                </tr>
+            <?php endforeach; ?>
+            </tbody>
+        </table>
+    </div>
+    <script type="text/javascript">
+        decorateTable('packages-table');
+    </script>
+
+    <div class="buttons-set">
+        <button type="button" title="<?php /* @escapeNotVerified */ echo __('Close Window') ?>" class="button" onclick="window.close();">
+            <span><?php /* @escapeNotVerified */ echo __('Close Window') ?></span>
+        </button>
+    </div>
+</div>
+
+<script>
+    require([
+        'jquery',
+        'mage/translate',
+        'Magento_Customer/js/customer-data'
+    ], function ($, $t, customerData) {
+        'use strict';
+
+        $('.ms-buy').click(function(e){
+            e.preventDefault();
+            var miniCart = $('[data-block="minicart"]'),
+                buyBtn = $(this);
+            buyBtn.html($t('Adding to cart...')).addClass('disabled');
+
+            $.ajax({
+                url: buyBtn.attr('href'),
+                type: 'get',
+                dataType: 'json',
+                success: function(res) {
+                    if(res.success){
+                        buyBtn.html($t('Buy')).removeClass('disabled');
+                        miniCart.trigger('contentLoading');
+                        customerData.reload('cart', true);
+                        miniCart.trigger('contentUpdated');
+                    }
+                    else {
+                        if (res.error) {
+                            buyBtn.html($t('BUY')).removeClass('disabled');
+                            alert($t(res.msg));
+                        } else {
+                            alert($t(res.msg));
+                            window.location = res.redirect;
+                        }
+                    }
+                }
+            });
+        });
+
+        $('.ms-buy').bind('contextmenu', function (e) {
+            return false;
+        });
+    });
+</script>

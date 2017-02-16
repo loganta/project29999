@@ -1,0 +1,33 @@
+<!--@subject {{var store.getFrontendName()}}: New Membership Package  # {{var package.getPackageName()}} @-->
+<!--@vars
+{"store url=\"\"":"Store Url",
+"skin url=\"images/logo_email.gif\" _area='frontend'":"Email Logo Image",
+"htmlescape var=$member.getName()":"Member Name",
+"var store.getFrontendName()":"Store Name",
+"store url=\"customer/account/\"":"Customer Account Url",
+}
+@-->
+<!--@styles
+body,td { color:#2f2f2f; font:11px/1.35em Verdana, Arial, Helvetica, sans-serif; }
+@-->
+{{template config_path="design/email/header_template"}}
+
+<table>
+    <tr class="email-intro">
+        <td>
+            <p class="greeting"><strong>Dear {{var member.getName()}}</strong>,</p>
+            <p>Thank you very much for purchasing {{var package.getPackageName()}} , please click the following link to see its detail</p>
+            <a href="{{var package.getViewUrl()}}">{{var package.getPackageName()}}</a>
+        </td>
+    </tr>
+    <tr class="email-summary">
+        <td>
+            <p>If you have any questions about our membership program, please email us at <a href="mailto:{{var support_email}}" style="color:#1E7EC8;">{{var support_email}}</a></p>
+            <p>Thank you for your business.</p>
+            <p>Best Regards,</p>
+            <p>{{var store.getFrontendName()}}</p>
+        </td>
+    </tr>
+</table>
+
+{{template config_path="design/email/footer_template"}}

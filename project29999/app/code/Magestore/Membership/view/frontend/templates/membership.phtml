@@ -1,0 +1,189 @@
+<?php
+/**
+ * Magestore
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the Magestore.com license that is
+ * available through the world-wide-web at this URL:
+ * http://www.magestore.com/license-agreement.html
+ *
+ * DISCLAIMER
+ *
+ * Do not edit or add to this file if you wish to upgrade this extension to newer
+ * version in the future.
+ *
+ * @category    Magestore
+ * @package     Magestore_Membership
+ * @copyright   Copyright (c) 2012 Magestore (http://www.magestore.com/)
+ * @license     http://www.magestore.com/license-agreement.html
+ */
+?>
+<?php /** @var $block \Magestore\Membership\Block\Membership */ ?>
+<?php $packages = $block->getAllPackages(); ?>
+<div class="ms-membership">
+    <div class="page-title form-group">
+        <h1><?php /* @escapeNotVerified */
+            echo __('MEMBERSHIP PROGRAM') ?></h1>
+    </div>
+    <?php echo($block->getWelcomeMessage()); ?>
+    <?php if ($totalPackage = $packages->getSize()): ?>
+        <div class="packages" id="packages">
+            <!-- product loop -->
+            <?php /** @var \Magestore\Membership\Model\Package $package */
+            $count = 0;
+            foreach ($packages as $package):
+                if (!($count % 3)): echo '<div class="row">'; endif; ?>
+
+                <div class="col-sm-4 col-xs-6 col-tn-12">
+                    <div class="package text-center">
+                        <div class="package-name col-xs-12">
+                        <span id="name-pc">
+                        <?php echo $package->getPackageName() ?>
+                        </span>
+                        </div>
+                        <div class="pricing">
+                            <span><strong><?php echo $block->formatPrice($package->getPackagePrice()) ?></strong></span>
+                        </div>
+                        <div class="duration">
+                            <span>Duration: <?php echo $package->getDuration() ?> <?php echo $package->getUnitTimeLabel(); ?></span>
+                        </div>
+                        <div class="description">
+                            <?php echo $block->limitString($package->getPackageDescription(), 65); ?>
+                        </div>
+                        <div id="action-bt">
+                            <div class=" col-sm-6 col-xs-6 col-tn-12">
+                                <div id="viewdetails">
+                                    <a href="<?php echo $package->getViewUrl() ?>">
+                                        <?php /* @escapeNotVerified */
+                                        echo __('VIEW DETAILS'); ?>
+                                    </a>
+                                </div>
+                            </div>
+                            <div class="hidden-lg hidden-md hidden-sm hidden-xs col-xs-12">&nbsp;</div>
+                            <?php if (!$memberPackage = $block->getSignedUpPackageInfo($package->getId())): ?>
+                                <div class=" col-sm-6 col-xs-6 col-tn-12">
+                                    <div id="signup">
+                                        <a class="ms-buy"
+                                           href='<?php echo $block->getUrl('membership/index/addToCart', ['id' => $package->getId()]) ?>'>BUY</a>
+                                    </div>
+                                </div>
+                            <?php else:
+                                $endTime = $block->formatDate($memberPackage->getEndTime(), \IntlDateFormatter::LONG);
+                                if ($memberPackage->isNeedToRenew()): ?>
+                                    <div class="col-sm-6 col-xs-6 col-tn-12">
+                                        <div id="renew">
+                                            <a class="ms-renew"
+                                               href='<?php echo $block->getUrl('membership/index/addToCart', ['id' => $package->getId()]) ?>'>Renew
+                                                Now</a>
+                                        </div>
+                                    </div>
+                                    <div
+                                        class="col-xs-12 expire"><?php echo __(sprintf('Expired on %s', $endTime)) ?></div>
+                                <?php else: ?>
+                                    <div class="col-sm-6 col-xs-6 col-tn-12">
+                                        <div id="renew">
+                                            <a class="ms-renew"
+                                               href='<?php echo $block->getUrl('membership/index/addToCart', ['id' => $package->getId()]) ?>'>Renew
+                                                Now</a>
+                                        </div>
+                                    </div>
+                                    <div
+                                        class="col-xs-12 expire"><?php echo __(sprintf('Expires on %s', $endTime)) ?></div>
+                                <?php endif; ?>
+                            <?php endif; ?>
+                        </div>
+                        <?php if ($package->getIsFeatured()): ?>
+                            <img src='<?php echo $block->getViewFileUrl('Magestore_Membership/images/hot.png'); ?>'
+                                 alt="hot" width="40" height="40">
+                        <?php endif; ?>
+                    </div>
+                </div>
+
+                <?php $count++;
+                if (!($count % 3)): echo '</div>'; endif;
+                if (($count == $totalPackage) && ($totalPackage % 3)): echo '</div>'; endif;
+
+            endforeach; ?>
+        </div>
+    <?php else: ?>
+        <h4><?php /* @escapeNotVerified */
+            echo __('There is no package available') ?></h4>
+    <?php endif; ?>
+</div>
+
+<script>
+    require([
+        'jquery',
+        'mage/translate',
+        'Magento_Customer/js/customer-data'
+    ], function ($, $t, customerData) {
+        'use strict';
+
+        $('.ms-buy').click(function (e) {
+            e.preventDefault();
+            var miniCart = $('[data-block="minicart"]'),
+                buyBtn = $(this);
+            buyBtn.html($t('Adding to cart...')).addClass('disabled');
+
+            $.ajax({
+                url: buyBtn.attr('href'),
+                type: 'get',
+                dataType: 'json',
+                success: function (res) {
+                    if (res.success) {
+                        buyBtn.html($t('BUY')).removeClass('disabled');
+                        miniCart.trigger('contentLoading');
+                        customerData.reload('cart', true);
+                        miniCart.trigger('contentUpdated');
+                    } else {
+                        if (res.error) {
+                            buyBtn.html($t('BUY')).removeClass('disabled');
+                            alert($t(res.msg));
+                        } else {
+                            alert($t(res.msg));
+                            window.location = res.redirect;
+                        }
+                    }
+                }
+            });
+        });
+
+        $('.ms-renew').click(function (e) {
+            e.preventDefault();
+            var miniCart = $('[data-block="minicart"]'),
+                buyBtn = $(this);
+            buyBtn.html($t('Adding to cart...')).addClass('disabled');
+
+            $.ajax({
+                url: buyBtn.attr('href'),
+                type: 'get',
+                dataType: 'json',
+                success: function (res) {
+                    if (res.success) {
+                        buyBtn.html($t('Renew')).removeClass('disabled');
+                        miniCart.trigger('contentLoading');
+                        customerData.reload('cart', true);
+                        miniCart.trigger('contentUpdated');
+                    } else {
+                        if (res.error) {
+                            buyBtn.html($t('Renew Now')).removeClass('disabled');
+                            alert($t(res.msg));
+                        } else {
+                            alert($t(res.msg));
+                            window.location = res.redirect;
+                        }
+                    }
+                }
+            });
+        });
+
+        $('.ms-buy').bind('contextmenu', function (e) {
+            return false;
+        });
+
+        $('.ms-renew').bind('contextmenu', function (e) {
+            return false;
+        });
+    });
+</script>

@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+/**
+ * Magestore
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the Magestore.com license that is
+ * available through the world-wide-web at this URL:
+ * http://www.magestore.com/license-agreement.html
+ *
+ * DISCLAIMER
+ *
+ * Do not edit or add to this file if you wish to upgrade this extension to newer
+ * version in the future.
+ *
+ * @category    Magestore
+ * @package     Magestore_Pdfinvoiceplus
+ * @copyright   Copyright (c) 2012 Magestore (http://www.magestore.com/)
+ * @license     http://www.magestore.com/license-agreement.html
+ */
+-->
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Config:etc/system_file.xsd">
+    <system>
+        <tab id="magestore" translate="label" sortOrder="20">
+            <label>magestore</label>
+        </tab>
+        <section id="membership" translate="label" type="text" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1">
+            <class>separator-top</class>
+            <label>Membership</label>
+            <tab>magestore</tab>
+            <resource>Magestore_Membership::config_membership</resource>
+            <group id="general" translate="label" type="text" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1">
+                <label>Membership Configurations</label>
+
+                <field id="new_package_email_template" translate="label comment" type="select" sortOrder="30"  showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Email template to members when they buy a package</label>
+                    <source_model>Magestore\Membership\Model\System\Template\NewPackage</source_model>
+                </field>
+
+                <field id="notify_renew_package_email_template" translate="label comment" type="select" sortOrder="40"  showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Notify client to renew a package</label>
+                    <source_model>Magestore\Membership\Model\System\Template\RenewPackage</source_model>
+                </field>
+
+                <field id="short_description" translate="label comment" type="textarea" sortOrder="50"  showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Short description that shows on membership page</label>
+                </field>
+
+                <field id="is_show_head_link" translate="label comment" type="select" sortOrder="55"  showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Show membership head link</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                </field>
+
+                <field id="days_before_expiration" translate="label comment" type="text" sortOrder="60"  showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Warn customer before package expiration:</label>
+                    <comment>
+                        <![CDATA[day(s). Default is 5 days.]]>
+                    </comment>
+                </field>
+            </group>
+
+            <group id="membership_style" translate="label" type="text" sortOrder="15" showInDefault="1" showInWebsite="1" showInStore="1">
+                <label>Style Configurations</label>
+                <field id="package_name_color" translate="label comment" type="text" sortOrder="1"  showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Package name color</label>
+                    <frontend_class>jscolor</frontend_class>
+                    <comment>
+                        <![CDATA[Default is #292929]]>
+                    </comment>
+                </field>
+                <field id="price_tag_color" translate="label comment" type="text" sortOrder="2"  showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Package price tag color</label>
+                    <frontend_class>jscolor</frontend_class>
+                    <comment>
+                        <![CDATA[Default is #FFFFFF]]>
+                    </comment>
+                </field>
+                <field id="price_tag_background_color" translate="label comment" type="text" sortOrder="3"  showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Package price tag background color</label>
+                    <frontend_class>jscolor</frontend_class>
+                    <comment>
+                        <![CDATA[Default is #1161B9]]>
+                    </comment>
+                </field>
+                <field id="customize" translate="label comment" type="textarea" sortOrder="6"  showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Customize styles</label>
+                    <comment>
+                        <![CDATA[Use css code to customize as you want]]>
+                    </comment>
+                </field>
+                <field id="add_js" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <frontend_model>Magestore\Membership\Block\Config\AddJsColor</frontend_model>
+                </field>
+            </group>
+        </section>
+    </system>
+</config>

@@ -1,0 +1,54 @@
+<?php
+
+/**
+ * Magestore
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the Magestore.com license that is
+ * available through the world-wide-web at this URL:
+ * http://www.magestore.com/license-agreement.html
+ *
+ * DISCLAIMER
+ *
+ * Do not edit or add to this file if you wish to upgrade this extension to newer
+ * version in the future.
+ *
+ * @category    Magestore
+ * @package     Magestore_Membership
+ * @copyright   Copyright (c) 2012 Magestore (http://www.magestore.com/)
+ * @license     http://www.magestore.com/license-agreement.html
+ */
+
+?>
+
+<?php
+    /** @var $block \Magestore\Membership\Block\CssGen */
+    $style = $block->getStyle();
+    if (isset($style)){
+        if (strtoupper($style['package_name_color']) == "FFFFFF" && strtoupper($style['price_tag_background_color']) == "FFFFFF" && strtoupper($style['price_tag_color']) == "FFFFFF"){
+            $style['package_name_color'] = "292929";
+            $style['price_tag_background_color'] = "1161B9";
+        };
+    }
+?>
+<style type="text/css">
+    .limiter {
+        display: block;
+    }
+
+    #name-pc {
+        color: #<?php if($style['package_name_color']): echo $style['package_name_color']; endif; ?>;
+    }
+
+    .pricing {
+        background-color: #<?php if($style['price_tag_background_color']): echo $style['price_tag_background_color']; endif; ?>;
+        color: #<?php if($style['price_tag_color']): echo $style['price_tag_color']; endif; ?>;
+    }
+
+    .ms-package-name {
+        color: #<?php if($style['package_name_color']): echo $style['package_name_color']; endif; ?>;
+    }
+
+    <?php if(isset($style['customize'])): echo $style['customize']; endif; ?>
+</style>

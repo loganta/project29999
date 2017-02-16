@@ -1,0 +1,58 @@
+<?php
+
+/**
+ * Magestore
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the Magestore.com license that is
+ * available through the world-wide-web at this URL:
+ * http://www.magestore.com/license-agreement.html
+ *
+ * DISCLAIMER
+ *
+ * Do not edit or add to this file if you wish to upgrade this extension to newer
+ * version in the future.
+ *
+ * @category    Magestore
+ * @package     Magestore_Membership
+ * @copyright   Copyright (c) 2012 Magestore (http://www.magestore.com/)
+ * @license     http://www.magestore.com/license-agreement.html
+ */
+
+namespace Magestore\Membership\Block;
+
+/**
+ * class TopLink
+ *
+ * @category Magestore
+ * @package  Magestore_Membership
+ * @module   Membership
+ * @author   Magestore Developer
+ */
+class TopLink extends \Magento\Framework\View\Element\Html\Link
+{
+
+    /**
+     * Template name
+     *
+     * @var string
+     */
+    protected $_template = 'Magestore_Membership::top-link.phtml';
+
+    /**
+     * @return string
+     */
+    public function getHref()
+    {
+        return $this->getUrl('membership');
+    }
+
+    /**
+     * @return \Magento\Framework\Phrase
+     */
+    public function getLabel()
+    {
+        return __('Membership');
+    }
+}

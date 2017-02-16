@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+/**
+ * Magestore
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the Magestore.com license that is
+ * available through the world-wide-web at this URL:
+ * http://www.magestore.com/license-agreement.html
+ *
+ * DISCLAIMER
+ *
+ * Do not edit or add to this file if you wish to upgrade this extension to newer
+ * version in the future.
+ *
+ * @category    Magestore
+ * @package     Magestore_Membership
+ * @copyright   Copyright (c) 2012 Magestore (http://www.magestore.com/)
+ * @license     http://www.magestore.com/license-agreement.html
+ */
+-->
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Backend:etc/menu.xsd">
+    <menu>
+        <add id="Magestore_Membership::magestoremembership" title="MEMBERSHIP"
+             resource="Magestore_Membership::magestoremembership" module="Magestore_Membership" sortOrder="20"/>
+
+        <add id="Magestore_Membership::managegroup" title="Manage Product Groups"
+             resource="Magestore_Membership::managegroup" parent="Magestore_Membership::magestoremembership"
+             action="membershipadmin/group/index" module="Magestore_Membership" sortOrder="10"/>
+        <add id="Magestore_Membership::managepackage" title="Manage Packages"
+             resource="Magestore_Membership::managepackage" parent="Magestore_Membership::magestoremembership"
+             action="membershipadmin/package/index" module="Magestore_Membership" sortOrder="20"/>
+        <add id="Magestore_Membership::managemembers" title="Manage Members"
+             resource="Magestore_Membership::managemembers" parent="Magestore_Membership::magestoremembership"
+             action="membershipadmin/member/index" module="Magestore_Membership" sortOrder="30"/>
+        <add id="Magestore_Membership::paymentHistory" title="Payment History"
+             resource="Magestore_Membership::paymentHistory" parent="Magestore_Membership::magestoremembership"
+             action="membershipadmin/paymentHistory/index" module="Magestore_Membership" sortOrder="40"/>
+
+        <add id="Magestore_Membership::settings" title="Settings"
+             resource="Magestore_Membership::settings" parent="Magestore_Membership::magestoremembership"
+             module="Magestore_Membership"
+             action="adminhtml/system_config/edit/section/membership" sortOrder="50"/>
+    </menu>
+</config>

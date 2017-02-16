@@ -1,0 +1,155 @@
+<?php
+/**
+ * Magestore
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the Magestore.com license that is
+ * available through the world-wide-web at this URL:
+ * http://www.magestore.com/license-agreement.html
+ *
+ * DISCLAIMER
+ *
+ * Do not edit or add to this file if you wish to upgrade this extension to newer
+ * version in the future.
+ *
+ * @category    Magestore
+ * @package     Magestore_Membership
+ * @copyright   Copyright (c) 2012 Magestore (http://www.magestore.com/)
+ * @license     http://www.magestore.com/license-agreement.html
+ */
+?>
+<?php
+/** @var $block \Magestore\Membership\Block\MembershipPlan */
+$payments = $block->getPaymentHistory();
+$mPackages = $block->getMyPackages();
+?>
+<div class="ms-membership">
+    <div class="page-title form-group">
+        <h1><?php /* @escapeNotVerified */echo __('Membership Area') ?></h1>
+    </div>
+    <h2><?php /* @escapeNotVerified */echo __('My Packages') ?></h2>
+    <?php if (!count($mPackages)): ?>
+        <p class="note-msg"><?php /* @escapeNotVerified */echo __('You do not sign up to any packages.') ?></p>
+    <?php else: ?>
+        <div class="table-responsive form-group">
+            <table class="packages-table table table-bordered table-hover" id="myplan-table">
+                <thead>
+                <tr>
+                    <th class="first"><?php /* @escapeNotVerified */echo __('Package') ?></th>
+                    <th><?php /* @escapeNotVerified */echo __('Expired Date') ?></th>
+                    <th><?php /* @escapeNotVerified */echo __('Purchased Product Qty') ?></th>
+                    <th><?php /* @escapeNotVerified */echo __('Saved Total') ?></th>
+                    <th></th>
+                </tr>
+                </thead>
+                <tbody>
+                <?php
+                /** @var \Magestore\Membership\Model\MemberPackage $package */
+                foreach ($mPackages as $mPackage):
+                    /** @var \Magestore\Membership\Model\Package $package */
+                    $package = $block->getPackageById($mPackage->getPackageId());
+                    ?>
+                    <tr>
+                        <td class="first">
+                            <a href="<?php echo $package->getViewUrl() ?>" title="<?php echo $package->getPackageName(); ?>">
+                                <?php echo $package->getPackageName(); ?>
+                            </a>
+                        </td>
+                        <td><?php echo $block->formatDate($mPackage->getEndTime(), \IntlDateFormatter::LONG) ?></td>
+                        <td><?php echo $mPackage->getBoughtItemTotal() ?></td>
+                        <td><?php echo $block->formatPrice($mPackage->getSavedTotal()) ?></td>
+                        <td>
+                            <div id="renewplan">
+                                <a class="ms-renew" href="<?php echo $block->getRenewUrl($package->getId()) ?>">
+                                    <?php /* @escapeNotVerified */echo __('Renew Now') ?>
+                                </a>
+                            </div>
+                        </td>
+                    </tr>
+                <?php endforeach; ?>
+                </tbody>
+            </table>
+        </div>
+    <?php endif; ?>
+    <?php if ($payments->getSize()): ?>
+        <h2><?php /* @escapeNotVerified */
+            echo __('My Payment History') ?></h2>
+        <div class="table-responsive form-group">
+            <table class="packages-table table table-bordered table-hover" id="packages-table">
+                <thead>
+                <tr>
+                    <th class="first"><?php /* @escapeNotVerified */echo __('Package') ?></th>
+                    <th><?php /* @escapeNotVerified */echo __('Order Date') ?></th>
+                    <th><?php /* @escapeNotVerified */echo __('Duration') ?></th>
+                    <th><?php /* @escapeNotVerified */echo __('Price') ?></th>
+                    <th><?php /* @escapeNotVerified */echo __('Your Order') ?></th>
+                    <th><?php /* @escapeNotVerified */echo __('Order State') ?></th>
+                    <th><?php /* @escapeNotVerified */echo __('Payment Status') ?></th>
+                </tr>
+                </thead>
+                <tbody>
+                <?php /** @var \Magestore\Membership\Model\PaymentHistory $payment */
+                foreach ($payments as $payment): ?>
+                    <tr>
+                        <td class="first"><?php echo $payment->getPackageName() ?></td>
+                        <td><?php echo $payment->getOrderDate() ?></td>
+                        <td><?php echo $payment->getDuration() ?><?php echo $payment->getUnitTimeLabel() ?></td>
+                        <td><?php echo $block->formatPrice($payment->getPrice()) ?></td>
+                        <td><?php echo '#' . $payment->getOrderIncrementId() ?></td>
+                        <td><?php echo $payment->getOrderStatus() ?></td>
+                        <td><?php echo $payment->getPaymentStatus() ?></td>
+                    </tr>
+                <?php endforeach; ?>
+                </tbody>
+            </table>
+        </div>
+    <?php endif; ?>
+</div>
+<script type="text/javascript">
+    decorateTable('packages-table');
+    decorateTable('myplan-table');
+</script>
+
+<script>
+    require([
+        'jquery',
+        'mage/translate',
+        'Magento_Customer/js/customer-data'
+    ], function ($, $t, customerData) {
+        'use strict';
+
+        $('.ms-renew').click(function (e) {
+            e.preventDefault();
+            var miniCart = $('[data-block="minicart"]'),
+                buyBtn = $(this);
+            buyBtn.html($t('Adding to cart...')).addClass('disabled');
+
+            $.ajax({
+                url: buyBtn.attr('href'),
+                type: 'get',
+                dataType: 'json',
+                success: function (res) {
+                    if (res.success) {
+                        buyBtn.html($t('Renew Now')).removeClass('disabled');
+                        miniCart.trigger('contentLoading');
+                        customerData.reload('cart', true);
+                        miniCart.trigger('contentUpdated');
+                    } else {
+                        if (res.error) {
+                            buyBtn.html($t('Renew Now')).removeClass('disabled');
+                            alert($t(res.msg));
+                        } else {
+                            alert($t(res.msg));
+                            window.location = res.redirect;
+                        }
+                    }
+                }
+            });
+        });
+
+        $('.ms-renew').bind('contextmenu', function (e) {
+            return false;
+        });
+    });
+</script>

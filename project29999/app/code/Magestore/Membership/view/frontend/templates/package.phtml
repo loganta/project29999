@@ -1,0 +1,199 @@
+<?php
+
+/**
+ * Magestore
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the Magestore.com license that is
+ * available through the world-wide-web at this URL:
+ * http://www.magestore.com/license-agreement.html
+ *
+ * DISCLAIMER
+ *
+ * Do not edit or add to this file if you wish to upgrade this extension to newer
+ * version in the future.
+ *
+ * @category    Magestore
+ * @package     Magestore_Membership
+ * @copyright   Copyright (c) 2012 Magestore (http://www.magestore.com/)
+ * @license     http://www.magestore.com/license-agreement.html
+ */
+
+?>
+
+<?php
+    /** @var $block \Magestore\Membership\Block\Package */
+    $package = $block->getPackage();
+?>
+
+<div class="ms-membership">
+    <div class="page-title form-group">
+        <h1 class="col-xs-9 ms-package-name"><?php echo $package->getPackageName(); ?></h1>
+        <div class="col-xs-9 text-left">
+            <br/>
+            <span><?php echo 'Description: '.$package->getPackageDescription(); ?></span>
+        </div>
+<!--        --><?php //if(!$block->getSignedUpPackageInfo()): ?>
+            <div class="col-xs-3 text-right">
+                <?php if($block->getSignedUpPackageInfo()): ?>
+                    <a class="ms-renew" href='<?php echo $block->getUrl('membership/index/addToCart', ['id' => $package->getId()]) ?>'>Renew Now</a>
+                <?php else: ?>
+                    <a class="ms-buy" href='<?php echo $block->getUrl('membership/index/addToCart', ['id' => $package->getId()]) ?>'>BUY</a>
+                <?php endif; ?>
+            </div>
+<!--        --><?php //endif; ?>
+    </div>
+
+    <?php $products = $block->getCollection(); ?>
+
+    <?php if(count($products)): ?>
+        <div class="form-group"><?php echo $block->getPagerHtml() ?></div>
+        <div class="table-responsive form-group">
+            <table class="packages-table table table-bordered table-hover" id="packages-table">
+                <thead>
+                    <tr id="th-title">
+                        <th class="first"><?php echo __('Product') ?></th>
+                        <th><?php echo __('Image') ?></th>
+                        <th><?php echo __('Regular Price') ?></th>
+                        <th><?php echo __('Membership Price') ?></th>
+                        <th><?php echo __('You Save') ?></th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                <?php /** @var \Magento\Catalog\Model\Product $product */
+                foreach($products as $product):
+                    $membershipPrice = $block->getMembershipPrice($product->getId(), $package); ?>
+
+                    <tr valign="middle">
+                        <td class="first">
+                            <a href="<?php echo $product->getProductUrl()?>" target="_blank">
+                                <?php echo $product->getName() ?>
+                            </a>
+                        </td>
+                        <td><img src="<?php echo $block->getProductThumbnail($product) ?>"/></td>
+                        <td><?php echo $block->formatPrice(floatval($product->getData('price'))) ?></td>
+                        <td><?php echo $block->formatPrice($membershipPrice) ?></td>
+                        <td><?php echo $block->formatPrice(floatval($product->getData('price')) - $membershipPrice) ?></td>
+                        <td>
+                            <div class="actions-primary">
+                                <?php if ($product->isSaleable()): ?>
+                                    <?php if ($product->getTypeInstance()->hasRequiredOptions($product)): ?>
+                                        <button class="action tocart primary"
+                                                data-mage-init='{"redirectUrl":{"url":"<?php /* @escapeNotVerified */ echo $block->getAddToCartUrl($product) ?>"}}'
+                                                type="button" title="<?php /* @escapeNotVerified */ echo __('Add to Cart') ?>">
+                                            <span><?php /* @escapeNotVerified */ echo __('Add to Cart') ?></span>
+                                        </button>
+                                    <?php else: ?>
+                                        <?php
+                                        $postDataHelper = $this->helper('Magento\Framework\Data\Helper\PostHelper');
+                                        $postData = $postDataHelper->getPostData($block->getAddToCartUrl($product), ['product' => $product->getEntityId()])
+                                        ?>
+                                        <button class="action tocart primary"
+                                                data-post='<?php /* @escapeNotVerified */ echo $postData; ?>'
+                                                type="button" title="<?php /* @escapeNotVerified */ echo __('Add to Cart') ?>">
+                                            <span><?php /* @escapeNotVerified */ echo __('Add to Cart') ?></span>
+                                        </button>
+                                    <?php endif; ?>
+                                <?php else: ?>
+                                    <?php if ($product->getIsSalable()): ?>
+                                        <div class="stock available"><span><?php /* @escapeNotVerified */ echo __('In stock') ?></span></div>
+                                    <?php else: ?>
+                                        <div class="stock unavailable"><span><?php /* @escapeNotVerified */ echo __('Out of stock') ?></span></div>
+                                    <?php endif; ?>
+                                <?php endif; ?>
+                            </div>
+                        </td>
+                    </tr>
+
+                <?php endforeach; ?>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="form-group"><?php echo $block->getPagerHtml() ?></div>
+    <?php else:?>
+        <div class="form-group"><?php echo __('There is no product on this package!') ?></div>
+    <?php endif; ?>
+    
+    <script type="text/javascript">
+        require([
+            'jquery',
+            'mage/translate',
+            'Magento_Customer/js/customer-data'
+        ], function ($, $t, customerData) {
+            'use strict';
+
+            $('.ms-buy').click(function (e) {
+                e.preventDefault();
+                var miniCart = $('[data-block="minicart"]'),
+                    buyBtn = $(this);
+                buyBtn.html($t('Adding to cart...')).addClass('disabled');
+
+                $.ajax({
+                    url: buyBtn.attr('href'),
+                    type: 'get',
+                    dataType: 'json',
+                    success: function (res) {
+                        if(res.success){
+                            buyBtn.html($t('BUY')).removeClass('disabled');
+                            miniCart.trigger('contentLoading');
+                            customerData.reload('cart', true);
+                            miniCart.trigger('contentUpdated');
+                        } else {
+                            if(res.error){
+                                buyBtn.html($t('BUY')).removeClass('disabled');
+                                alert($t(res.msg));
+                            } else {
+                                alert($t(res.msg));
+                                window.location = res.redirect;
+                            }
+                        }
+                    }
+                });
+            });
+
+            $('.ms-renew').click(function (e) {
+                e.preventDefault();
+                var miniCart = $('[data-block="minicart"]'),
+                    buyBtn = $(this);
+                buyBtn.html($t('Adding to cart...')).addClass('disabled');
+
+                $.ajax({
+                    url: buyBtn.attr('href'),
+                    type: 'get',
+                    dataType: 'json',
+                    success: function (res) {
+                        if(res.success){
+                            buyBtn.html($t('Renew')).removeClass('disabled');
+                            miniCart.trigger('contentLoading');
+                            customerData.reload('cart', true);
+                            miniCart.trigger('contentUpdated');
+                        } else {
+                            if(res.error){
+                                buyBtn.html($t('Renew Now')).removeClass('disabled');
+                                alert($t(res.msg));
+                            } else {
+                                alert($t(res.msg));
+                                window.location = res.redirect;
+                            }
+                        }
+                    }
+                });
+            });
+
+            $('.ms-buy').bind('contextmenu', function (e) {
+                return false;
+            });
+
+            $('.ms-renew').bind('contextmenu', function (e) {
+                return false;
+            });
+
+            function url_redirect(url){
+                window.location = url;
+            }
+        });
+    </script>
+</div>

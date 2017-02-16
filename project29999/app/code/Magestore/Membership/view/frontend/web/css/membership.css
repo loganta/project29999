@@ -1,0 +1,507 @@
+.form-group.page-title h1 {
+    margin: 0;
+}
+
+.packages {
+    float: left;
+    width: 100%;
+    margin: 20px 0 0;
+}
+
+.packages .package {
+    background: #fff;
+    min-height: 260px;
+    float: left;
+    /*width: 100%;*/
+    width: 285px !important;
+    margin-bottom: 20px;
+    color: #535A64;
+    border: 1px solid #dddddd;
+    font-size: 16px;
+    padding-bottom: 20px;
+    border-radius: 4px;
+    transition: all 350ms ease-out;
+    -webkit-transition: all 350ms ease-out;
+    -moz-transition: all 350ms ease-out;
+    -ms-transition: all 350ms ease-out;
+    -o-transition: all 350ms ease-out;
+}
+
+.package .package-name {
+    font-weight: 300;
+    padding: 13px 0 13px 0;
+    text-align: center;
+    font-size: 24px;
+    font-weight: bold;
+    text-transform: uppercase;
+    color: #292929;
+    background: #ffffff;
+}
+
+.package .package-price {
+    float: left;
+    width: 100%;
+}
+
+.package .package-price .price {
+    font-size: 14px;
+    font-weight: 600;
+}
+
+.package p {
+    float: left;
+    width: 100%;
+    text-transform: uppercase;
+    margin-bottom: 5px;
+    text-align: left;
+    padding-left: 10%;
+}
+
+.package .package-detail {
+    padding: 0 8%;
+    font-size: 14px;
+    float: left;
+    width: 100%;
+    height: 70px;
+    overflow: hidden;
+    margin-bottom: 10px;
+}
+
+.package .action {
+    padding-left: 5px;
+    padding-right: 5px;
+}
+
+.package .action a {
+    float: left;
+    width: 100%;
+    color: #fff;
+    background: #94B713;
+    font-size: 14px;
+    padding: 5px;
+    text-decoration: none;
+    border-radius: 3px;
+}
+
+.package .expire {
+    font-size: 13px;
+    font-style: italic;
+    font-weight: 600;
+    margin-top: 10px;
+}
+
+.packages div.package:hover {
+    border-color: #51BCAA;
+    width: 285px;
+    border: 1px solid #dddddd;
+}
+
+.packages div.package:hover .package-name {
+    background: #ffffff;
+}
+
+.packages div.package:hover .action a {
+    background: #51BCAA;
+}
+
+.membership-steps ol li.first {
+    -moz-border-radius-bottomleft: 5px;
+    -moz-border-radius-topleft: 5px;
+}
+
+.membership-steps ol li.step1, .membership-steps ol li.step2 {
+    border-right: 0 none;
+}
+
+.membership-steps ol li {
+    background: none repeat scroll 0 0 #F2F2F2;
+    border: 1px solid #ddd;
+    color: #535A64;
+    display: block;
+    float: left;
+    font-size: 14px;
+    font-weight: bold;
+    margin-left: 0 !important;
+    padding: 5px 45px 5px 10px;
+}
+
+.ms-membership .packages-table tr {
+    border-left: 1px solid #ffffff;
+    border-right: 1px solid #ffffff;
+    height: 40px;
+}
+
+.ms-membership .packages-table #th-title {
+    border: 1px solid #ffffff;
+}
+
+.ms-membership .packages-table tr td {
+    border-left: none !important;
+    border-right: none !important;
+}
+
+.membership-steps ol li span.number {
+    -moz-border-radius: 5px 5px 5px 5px;
+    background: none repeat scroll 0 0 #94C651;
+    color: #FFFFFF;
+    margin-right: 5px;
+    padding: 0 7px;
+}
+
+.membership-steps ol li span {
+    display: block;
+    float: left;
+    line-height: 24px;
+}
+
+@media (max-width: 768px) {
+    .membership-steps ol li {
+        border: 0;
+    }
+}
+
+.ms-membership .packages-table thead tr th {
+    color: #26384c;
+    /* background: #94C651; */
+    font-weight: 600;
+    border-left: none !important;
+    border-right: none !important;
+    border-bottom: 3px solid #1161b9 !important;
+}
+
+.ms-membership .packages-table .action {
+    float: left;
+    width: 100%;
+    text-align: center;
+}
+
+.ms-membership .packages-table .action a {
+    color: #fff;
+    background: #94B713;
+    font-size: 13px;
+    padding: 5px;
+    text-decoration: none;
+    border-radius: 3px;
+}
+
+.ms-membership .packages-table tbody tr:hover .action a {
+    background: #51BCAA;
+}
+
+.ms-membership .page-title {
+    margin-bottom: 20px !important;
+}
+
+.ms-membership .page-title h1 {
+    border-bottom: 0;
+    margin: 0;
+    font-weight: 300;
+    font-size: 40px;
+}
+
+.ms-membership .page-title .text-right a {
+    float: right;
+    font-size: 15px;
+    text-decoration: none;
+    padding: 7px 14px;
+    border-radius: 5px;
+}
+
+.text-right a.ms-buy {
+    color: #000;
+    background-color: #cecece;
+}
+
+.text-right a.ms-renew {
+    color: #ffffff;
+    background-color: #FF3D00;
+}
+
+.ms-short-des {
+    padding-bottom: 10px;
+}
+
+.planinfo {
+    margin-left: 0;
+    padding-left: 0;
+    list-style: none;
+    line-height: 25px;
+}
+
+.planinfo li.yes {
+    padding-left: 25px;
+    background-image: url(images/yes-check.gif);
+    background-repeat: no-repeat;
+    background-position: 0 .5em;
+    text-align: left;
+    vertical-align: middle;
+}
+
+.planinfo li.no {
+    padding-left: 25px;
+    background-image: url(images/no-x.gif);
+    background-repeat: no-repeat;
+    background-position: 0 .5em;
+    text-align: left;
+    vertical-align: middle;
+}
+
+.membership-steps ol {
+    padding: 0;
+}
+
+/*z edit code*/
+#viewdetails {
+    width: 120px;
+    height: 34px;
+    border: 1px solid #cecece;
+    border-radius: 3px;
+    margin-left: 5px;
+}
+
+#viewdetails a {
+    font-size: 14px;
+    line-height: 30px;
+    text-decoration: none;
+    color: #292929;
+}
+
+#viewdetails a:hover {
+    font-size: 14px;
+    line-height: 30px;
+    text-decoration: none;
+}
+
+#signup {
+    width: 116px;
+    height: 34px;
+    border: 1px solid #cecece;
+    background-color: #cecece;
+    font-size: 14px;
+    color: #ffffff;
+    border-radius: 3px;
+}
+
+#signup a {
+    font-size: 14px;
+    line-height: 30px;
+    text-decoration: none;
+    color: #292929;
+    display: block;
+}
+
+#signup a:hover {
+    font-size: 14px;
+    line-height: 30px;
+    text-decoration: none;
+}
+
+#name-pc {
+    font-weight: 400;
+    font-size: 24px;
+    color: #292929;
+}
+
+.pricing {
+    float: left;
+    width: 100%;
+    background-color: #1161b9;
+    color: #ffffff;
+    font-size: 15px;
+    padding: 15px 0 15px 0;
+}
+
+.duration {
+    width: 90%;
+    margin: 0 auto;
+    background-color: #ffffff;
+    border-bottom: 1px solid #dddddd;
+    font-size: 14px;
+    color: #292929;
+    clear: both;
+    padding-top: 30px;
+    /* line-height: 34px; */
+    padding-bottom: 10px;
+
+}
+
+.description {
+    width: 90%;
+    margin: 0 auto;
+    background-color: #ffffff;
+    border-bottom: 1px solid #dddddd;
+    font-size: 14px;
+    color: #292929;
+    clear: both;
+    padding-top: 10px;
+    /* line-height: 34px; */
+    padding-bottom: 10px;
+}
+
+#action-bt {
+    margin-top: 30px;
+}
+
+.header-pk {
+    width: 100%;
+    margin-bottom: 65px;
+    padding: 0;
+}
+
+#titlepk {
+    width: 80%;
+    float: left;
+    font-size: 36px;
+    color: #26384c;
+}
+
+#printpk {
+    width: 20%;
+    float: left;
+    color: #26384c;
+    font-size: 14px;
+}
+
+#printpk a {
+    text-decoration: none;
+    color: #26384c;
+    font-size: 14px;
+}
+
+#product-view-plan {
+    height: 35px;
+    width: 100px;
+    background-color: #d1e0e8;
+    padding: 5px 10px 5px 10px;
+    border-radius: 3px;
+}
+
+#product-view-plan a {
+    color: #26384c;
+    text-decoration: none;
+    font-size: 14px;
+}
+
+#product-sign-up {
+    height: 35px;
+    width: 100px;
+    background-color: #1161b9;
+    padding: 5px 10px 5px 10px;
+    border-radius: 3px;
+}
+
+#product-sign-up a {
+    color: #ffffff;
+    text-decoration: none;
+    font-size: 14px;
+}
+
+.ms-membership .pages-items {
+    float: right;
+}
+
+.ms-membership .form-group {
+    margin-bottom: 20px;
+}
+
+.ms-membership .action.previous {
+    margin-right: 0px;
+    padding: 1px 4px 1px 3px;
+    background: none;
+    border: none;
+}
+
+.ms-membership .action.next {
+    margin-left: 0px;
+    padding: 1px 4px 1px 3px;
+    background: none;
+    border: none;
+}
+
+.ms-membership .item.current {
+    border: 1px solid #dddddd;
+    background-color: none;
+}
+
+.ms-membership .pages strong.page {
+    background: none !important
+}
+
+#buynowpro {
+    width: 106px;
+    font-size: 14px;
+    background: #d1e0e8;
+    height: 36px;
+    border-radius: 5px;
+    text-align: center;
+}
+
+#buynowpro a {
+    text-decoration: none;
+    color: #26384c;
+    text-align: center;
+    line-height: 33px;
+}
+
+#renew {
+    width: 116px;
+    height: 34px;
+    border: 1px solid #FF3D00;
+    background-color: #FF3D00;
+    font-size: 14px;
+    color: #ffffff;
+    border-radius: 3px;
+}
+
+#renew a {
+    font-size: 14px;
+    line-height: 30px;
+    text-decoration: none;
+    color: #ffffff;
+}
+
+#renew a:hover {
+    font-size: 14px;
+    line-height: 30px;
+    text-decoration: none;
+    #ffffff;
+}
+
+#renewplan {
+    height: 34px;
+    border: 1px solid #FF3D00;
+    background-color: #FF3D00;
+    font-size: 14px;
+    color: #ffffff;
+    border-radius: 3px;
+    margin-left: 15px;
+    text-align: center;
+}
+
+#renewplan a {
+    font-size: 14px;
+    line-height: 30px;
+    text-decoration: none;
+    color: #ffffff;
+    text-align: center;
+}
+
+#renewplan a:hover {
+    font-size: 14px;
+    line-height: 30px;
+    text-decoration: none;
+    #ffffff;
+    text-align: center;
+}
+
+.packages div.package {
+    position: relative;
+}
+
+.packages div.package img {
+    position: absolute;
+    top: 0px;
+    left: 244px;
+}
+
+/*z edit code*/

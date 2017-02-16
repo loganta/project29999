@@ -1,0 +1,41 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Magestore
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the Magestore.com license that is
+ * available through the world-wide-web at this URL:
+ * http://www.magestore.com/license-agreement.html
+ *
+ * DISCLAIMER
+ *
+ * Do not edit or add to this file if you wish to upgrade this extension to newer
+ * version in the future.
+ *
+ * @category    Magestore
+ * @package     Magestore_Membership
+ * @copyright   Copyright (c) 2012 Magestore (http://www.magestore.com/)
+ * @license     http://www.magestore.com/license-agreement.html
+ */
+-->
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Store:etc/config.xsd">
+    <default>
+        <membership>
+            <general>
+                <activate_order_stt>complete</activate_order_stt>
+                <update_order_stt>complete</update_order_stt>
+                <new_package_email_template>magestore_membership_new_package</new_package_email_template>
+                <notify_renew_package_email_template>magestore_membership_renew_package</notify_renew_package_email_template>
+                <is_show_head_link>1</is_show_head_link>
+                <days_before_expiration>5</days_before_expiration>
+            </general>
+            <membership_style>
+                <package_name_color>292929</package_name_color>
+                <price_tag_color>FFFFFF</price_tag_color>
+                <price_tag_background_color>1161B9</price_tag_background_color>
+            </membership_style>
+        </membership>
+    </default>
+</config>
